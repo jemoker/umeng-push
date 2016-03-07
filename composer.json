@@ -1,0 +1,16 @@
+{
+    "name": "jemoker/umeng-push",
+    "authors": [
+        {
+            "name": "Jemoker",
+            "email": "i@jemoker.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Jemoker\\UmengPush\\": "src/"
+
+        }
+    }
+}
