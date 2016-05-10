@@ -186,7 +186,6 @@ class UmengPush
 			}
 			return $unicast->send();
 		} catch (Exception $e) {
-			var_dump($e);
 			return false;
 		}
 	}
