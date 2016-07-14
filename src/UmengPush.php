@@ -20,6 +20,8 @@ class UmengPush
 	protected $timestamp = NULL;
 	protected $validation_token = NULL;
 
+	protected $exceptions = [];
+
 	function __construct($key, $secret) {
 		$this->appkey = $key;
 		$this->appMasterSecret = $secret;
@@ -37,7 +39,7 @@ class UmengPush
 			$brocast->setPredefinedKeyValue("title", "中文的title");
 			$brocast->setPredefinedKeyValue("text", "Android broadcast text");
 			$brocast->setPredefinedKeyValue("after_open", "go_app");
-			// Set 'production_mode' to 'false' if it's a test device. 
+			// Set 'production_mode' to 'false' if it's a test device.
 			// For how to register a test device, please see the developer doc.
 			$brocast->setPredefinedKeyValue("production_mode", "true");
 			// [optional]Set extra fields
@@ -77,6 +79,7 @@ class UmengPush
 			}
 			return $unicast->send();
 		} catch (Exception $e) {
+			$this->exceptions[] = $e;
 			return false;
 		}
 	}
@@ -186,6 +189,7 @@ class UmengPush
 			}
 			return $unicast->send();
 		} catch (Exception $e) {
+			$this->exceptions[] = $e;
 			return false;
 		}
 	}
@@ -293,5 +297,13 @@ class UmengPush
 		} catch (Exception $e) {
 			return false;
 		}
+	}
+
+	/**
+	 * 获取产生的异常列表
+	 */
+	public function getExceptionList()
+	{
+		return $this->exceptions;
 	}
 }
