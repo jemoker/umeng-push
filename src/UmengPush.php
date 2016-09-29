@@ -49,12 +49,12 @@ class UmengPush
 			$brocast->setPredefinedKeyValue("production_mode", "true");
 			// [optional]Set extra fields
 			$brocast->setExtraField("test", "helloworld");
-			print("Sending broadcast notification, please wait...\r\n");
+			//print("Sending broadcast notification, please wait...\r\n");
 			$brocast->send();
-			print("Sent SUCCESS\r\n");
+			//print("Sent SUCCESS\r\n");
 		} catch (Exception $e) {
 			$this->exceptions[] = $e;
-			print("Caught exception: " . $e->getMessage());
+			//print("Caught exception: " . $e->getMessage());
 		}
 	}
 
@@ -101,15 +101,15 @@ class UmengPush
 			$filecast->setPredefinedKeyValue("title", "Android filecast title");
 			$filecast->setPredefinedKeyValue("text", "Android filecast text");
 			$filecast->setPredefinedKeyValue("after_open", "go_app"); //go to app
-			print("Uploading file contents, please wait...\r\n");
+			//print("Uploading file contents, please wait...\r\n");
 			// Upload your device tokens, and use '\n' to split them if there are multiple tokens
 			$filecast->uploadContents("aa" . "\n" . "bb");
-			print("Sending filecast notification, please wait...\r\n");
+			//print("Sending filecast notification, please wait...\r\n");
 			$filecast->send();
-			print("Sent SUCCESS\r\n");
+			//print("Sent SUCCESS\r\n");
 		} catch (Exception $e) {
 			$this->exceptions[] = $e;
-			print("Caught exception: " . $e->getMessage());
+			//print("Caught exception: " . $e->getMessage());
 		}
 	}
 
@@ -172,12 +172,12 @@ class UmengPush
 			$brocast->setPredefinedKeyValue("production_mode", "false");
 			// Set customized fields
 			$brocast->setCustomizedField("test", "helloworld");
-			print("Sending broadcast notification, please wait...\r\n");
+			//print("Sending broadcast notification, please wait...\r\n");
 			$brocast->send();
-			print("Sent SUCCESS\r\n");
+			//print("Sent SUCCESS\r\n");
 		} catch (Exception $e) {
 			$this->exceptions[] = $e;
-			print("Caught exception: " . $e->getMessage());
+			//print("Caught exception: " . $e->getMessage());
 		}
 	}
 
@@ -216,15 +216,15 @@ class UmengPush
 			$filecast->setPredefinedKeyValue("sound", "chime");
 			// Set 'production_mode' to 'true' if your app is under production mode
 			$filecast->setPredefinedKeyValue("production_mode", "false");
-			print("Uploading file contents, please wait...\r\n");
+			//print("Uploading file contents, please wait...\r\n");
 			// Upload your device tokens, and use '\n' to split them if there are multiple tokens
 			$filecast->uploadContents("aa" . "\n" . "bb");
-			print("Sending filecast notification, please wait...\r\n");
+			//print("Sending filecast notification, please wait...\r\n");
 			$filecast->send();
-			print("Sent SUCCESS\r\n");
+			//print("Sent SUCCESS\r\n");
 		} catch (Exception $e) {
 			$this->exceptions[] = $e;
-			print("Caught exception: " . $e->getMessage());
+			//print("Caught exception: " . $e->getMessage());
 		}
 	}
 
