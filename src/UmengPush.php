@@ -15,14 +15,19 @@ use Jemoker\UmengPush\Ios\IOSUnicast;
 
 class UmengPush
 {
+
 	protected $appkey = NULL;
+
 	protected $appMasterSecret = NULL;
+
 	protected $timestamp = NULL;
+
 	protected $validation_token = NULL;
 
 	protected $exceptions = [];
 
-	function __construct($key, $secret) {
+	function __construct($key, $secret)
+	{
 		$this->appkey = $key;
 		$this->appMasterSecret = $secret;
 		$this->timestamp = strval(time());
@@ -48,6 +53,7 @@ class UmengPush
 			$brocast->send();
 			print("Sent SUCCESS\r\n");
 		} catch (Exception $e) {
+			$this->exceptions[] = $e;
 			print("Caught exception: " . $e->getMessage());
 		}
 	}
@@ -72,7 +78,7 @@ class UmengPush
 			// Set your device tokens here
 			foreach ($data as $k => $v) {
 				if ($k == 'tag' || $k == 'val') {
-					$unicast->setExtraField($k, $v);    // 设置自定义值
+					$unicast->setExtraField($k, $v); // 设置自定义值
 				} else {
 					$unicast->setPredefinedKeyValue($k, $v);
 				}
@@ -84,7 +90,6 @@ class UmengPush
 		}
 	}
 
-
 	function sendAndroidFilecast()
 	{
 		try {
@@ -95,7 +100,7 @@ class UmengPush
 			$filecast->setPredefinedKeyValue("ticker", "Android filecast ticker");
 			$filecast->setPredefinedKeyValue("title", "Android filecast title");
 			$filecast->setPredefinedKeyValue("text", "Android filecast text");
-			$filecast->setPredefinedKeyValue("after_open", "go_app");  //go to app
+			$filecast->setPredefinedKeyValue("after_open", "go_app"); //go to app
 			print("Uploading file contents, please wait...\r\n");
 			// Upload your device tokens, and use '\n' to split them if there are multiple tokens
 			$filecast->uploadContents("aa" . "\n" . "bb");
@@ -103,6 +108,7 @@ class UmengPush
 			$filecast->send();
 			print("Sent SUCCESS\r\n");
 		} catch (Exception $e) {
+			$this->exceptions[] = $e;
 			print("Caught exception: " . $e->getMessage());
 		}
 	}
@@ -116,13 +122,14 @@ class UmengPush
 			$groupcast->setPredefinedKeyValue("timestamp", $this->timestamp);
 			foreach ($data as $k => $v) {
 				if ($k == 'tag' || $k == 'val') {
-					$groupcast->setExtraField($k, $v);    // 设置自定义值
+					$groupcast->setExtraField($k, $v); // 设置自定义值
 				} else {
 					$groupcast->setPredefinedKeyValue($k, $v);
 				}
 			}
 			return $groupcast->send();
 		} catch (Exception $e) {
+			$this->exceptions[] = $e;
 			return false;
 		}
 	}
@@ -137,7 +144,7 @@ class UmengPush
 
 			foreach ($data as $k => $v) {
 				if ($k == 'tag' || $k == 'val') {
-					$customizedcast->setExtraField($k, $v);    // 设置自定义值
+					$customizedcast->setExtraField($k, $v); // 设置自定义值
 				} else {
 					$customizedcast->setPredefinedKeyValue($k, $v);
 				}
@@ -145,6 +152,7 @@ class UmengPush
 
 			$customizedcast->send();
 		} catch (Exception $e) {
+			$this->exceptions[] = $e;
 			return false;
 		}
 	}
@@ -168,6 +176,7 @@ class UmengPush
 			$brocast->send();
 			print("Sent SUCCESS\r\n");
 		} catch (Exception $e) {
+			$this->exceptions[] = $e;
 			print("Caught exception: " . $e->getMessage());
 		}
 	}
@@ -182,7 +191,7 @@ class UmengPush
 			// Set your device tokens here
 			foreach ($data as $k => $v) {
 				if ($k == 'tag' || $k == 'val') {
-					$unicast->setCustomizedField($k, $v);    // 设置自定义值
+					$unicast->setCustomizedField($k, $v); // 设置自定义值
 				} else {
 					$unicast->setPredefinedKeyValue($k, $v);
 				}
@@ -214,6 +223,7 @@ class UmengPush
 			$filecast->send();
 			print("Sent SUCCESS\r\n");
 		} catch (Exception $e) {
+			$this->exceptions[] = $e;
 			print("Caught exception: " . $e->getMessage());
 		}
 	}
@@ -228,13 +238,14 @@ class UmengPush
 			// Set the filter condition
 			foreach ($data as $k => $v) {
 				if ($k == 'tag' || $k == 'val') {
-					$groupcast->setCustomizedField($k, $v);    // 设置自定义值
+					$groupcast->setCustomizedField($k, $v); // 设置自定义值
 				} else {
 					$groupcast->setPredefinedKeyValue($k, $v);
 				}
 			}
 			return $groupcast->send();
 		} catch (Exception $e) {
+			$this->exceptions[] = $e;
 			return false;
 		}
 	}
@@ -249,13 +260,14 @@ class UmengPush
 
 			foreach ($data as $k => $v) {
 				if ($k == 'tag' || $k == 'val') {
-					$customizedcast->setCustomizedField($k, $v);    // 设置自定义值
+					$customizedcast->setCustomizedField($k, $v); // 设置自定义值
 				} else {
 					$customizedcast->setPredefinedKeyValue($k, $v);
 				}
 			}
 			$customizedcast->send();
 		} catch (Exception $e) {
+			$this->exceptions[] = $e;
 			return false;
 		}
 	}
@@ -288,13 +300,15 @@ class UmengPush
 			if ($httpCode == "0") {
 				// Time out
 				throw new Exception("Curl error number:" . $curlErrNo . " , Curl error details:" . $curlErr . "\r\n");
-			} else if ($httpCode != "200") {
-				// We did send the notifition out and got a non-200 response
-				throw new Exception("Http code:" . $httpCode . " details:" . $result . "\r\n");
-			} else {
-				return $result;
-			}
+			} else
+				if ($httpCode != "200") {
+					// We did send the notifition out and got a non-200 response
+					throw new Exception("Http code:" . $httpCode . " details:" . $result . "\r\n");
+				} else {
+					return $result;
+				}
 		} catch (Exception $e) {
+			$this->exceptions[] = $e;
 			return false;
 		}
 	}
