@@ -7,6 +7,8 @@ use Jemoker\UmengPush\Android\AndroidUnicast;
 use Jemoker\UmengPush\Android\AndroidFilecast;
 use Jemoker\UmengPush\Android\AndroidGroupcast;
 use Jemoker\UmengPush\Android\AndroidCustomizedcast;
+use Jemoker\UmengPush\Android\AndroidListcast;
+use Jemoker\UmengPush\Ios\IOSListcast;
 use Jemoker\UmengPush\Ios\IOSBroadcast;
 use Jemoker\UmengPush\Ios\IOSCustomizedcast;
 use Jemoker\UmengPush\Ios\IOSFilecast;
@@ -72,6 +74,38 @@ class UmengPush
 	{
 		try {
 			$unicast = new AndroidUnicast();
+			$unicast->setAppMasterSecret($this->appMasterSecret);
+			$unicast->setPredefinedKeyValue("appkey", $this->appkey);
+			$unicast->setPredefinedKeyValue("timestamp", $this->timestamp);
+			// Set your device tokens here
+			foreach ($data as $k => $v) {
+				if ($k == 'tag' || $k == 'val') {
+					$unicast->setExtraField($k, $v); // 设置自定义值
+				} else {
+					$unicast->setPredefinedKeyValue($k, $v);
+				}
+			}
+			return $unicast->send();
+		} catch (Exception $e) {
+			$this->exceptions[] = $e;
+			return false;
+		}
+	}
+
+	/**
+	 *
+	 * @param unknown $device_tokens 设备唯一标识
+	 * @param unknown $ticker 通知栏提示文字
+	 * @param unknown $title 通知标题
+	 * @param unknown $text 通知文字描述
+	 * @param unknown $after_open 点击"通知"的后续行为
+	 * @param unknown $extra
+	 * @return mixed|boolean
+	 */
+	function sendAndroidListcast($data)
+	{
+		try {
+			$unicast = new AndroidListcast();
 			$unicast->setAppMasterSecret($this->appMasterSecret);
 			$unicast->setPredefinedKeyValue("appkey", $this->appkey);
 			$unicast->setPredefinedKeyValue("timestamp", $this->timestamp);
@@ -185,6 +219,28 @@ class UmengPush
 	{
 		try {
 			$unicast = new IOSUnicast();
+			$unicast->setAppMasterSecret($this->appMasterSecret);
+			$unicast->setPredefinedKeyValue("appkey", $this->appkey);
+			$unicast->setPredefinedKeyValue("timestamp", $this->timestamp);
+			// Set your device tokens here
+			foreach ($data as $k => $v) {
+				if ($k == 'tag' || $k == 'val') {
+					$unicast->setCustomizedField($k, $v); // 设置自定义值
+				} else {
+					$unicast->setPredefinedKeyValue($k, $v);
+				}
+			}
+			return $unicast->send();
+		} catch (Exception $e) {
+			$this->exceptions[] = $e;
+			return false;
+		}
+	}
+
+	function sendIOSListcast($data)
+	{
+		try {
+			$unicast = new IOSListcast();
 			$unicast->setAppMasterSecret($this->appMasterSecret);
 			$unicast->setPredefinedKeyValue("appkey", $this->appkey);
 			$unicast->setPredefinedKeyValue("timestamp", $this->timestamp);
